@@ -1,61 +1,59 @@
-# Lab06-AREP
+# Taller 7 - Desarrollo de Aplicación Web Segura
 
-### Descripción
+## Descripción
 
-El proyecto consiste en un prototipo de una aplicación de registro de logs distribuida y balanceada utilizando Round Robin. La arquitectura está diseñada para manejar un alto volumen de registros de logs, distribuyendo la carga de manera equitativa entre múltiples instancias de RoundRobinMongoDB (o LogService). Todo el entorno está desplegado utilizando Docker para facilitar la portabilidad y la escalabilidad.
+En este proyecto, se desarrolló una aplicación web segura utilizando Spark. La aplicación permite autenticación de usuarios y garantiza la integridad de los datos a través de la comunicación segura entre los servicios.
 
-### Arquitectura del Prototipo
+## Arquitectura del Prototipo
 
-La arquitectura del prototipo consta de los siguientes componentes:
+El prototipo sigue una arquitectura cliente-servidor, donde el servidor ofrece servicios de autenticación y autorización. Se implementa una capa de seguridad adicional utilizando HTTPS para garantizar la integridad y confidencialidad de la comunicación.
 
-- **APP-LB-RoundRobin:** La aplicación principal que se encarga de recibir las solicitudes de registro de logs. Utiliza el algoritmo de Round Robin para balancear la carga entre múltiples instancias de RoundRobinMongoDB.
-  
-- **RoundRobinMongoDB (o LogService):** Tres instancias de RoundRobinMongoDB (o LogService), que actúan como servicios de almacenamiento de logs. Estas instancias están diseñadas para manejar las solicitudes de registro de logs y almacenar los datos de manera distribuida.
+## Estructura del Repositorio
 
-- **MongoDB:** Una instancia de MongoDB utilizada como base de datos para almacenar los logs. Esta base de datos se utiliza para almacenar los registros de logs de manera persistente.
+El repositorio contiene los siguientes elementos principales:
 
-  ![image](https://github.com/Tianrojas/Lab06-AREP/assets/62759668/5a808eaf-da3e-4c79-ad10-759df0dfbacf)
+- **`src/`:** Directorio que contiene el código fuente de la aplicación.
+- **`keystores/`:** Directorio que contiene los archivos de almacenamiento de claves para configurar HTTPS.
+- **`README.md`:** Documentación detallada del proyecto.
 
-
-### Estructura del Repositorio
-
-El repositorio consta de dos proyectos:
-
-1. **APP-LB-RoundRobin:** Este proyecto contiene el código fuente de la aplicación principal, que se encarga de recibir las solicitudes de registro de logs y distribuir la carga entre las instancias de RoundRobinMongoDB utilizando el algoritmo de Round Robin.
-
-2. **RoundRobinMongoDB:** Este proyecto contiene el código fuente de las instancias de RoundRobinMongoDB (o LogService), que son servicios encargados de manejar las solicitudes de registro de logs y almacenar los datos en la base de datos MongoDB.
-
-### Componentes Principales
+## Componentes Principales
 
 Los componentes principales del proyecto son:
 
-- **APP-LB-RoundRobin:** La aplicación principal que se encarga de recibir las solicitudes de registro de logs y distribuir la carga entre las instancias de RoundRobinMongoDB utilizando el algoritmo de Round Robin.
+- **AuthServer:** Clase principal que configura y ejecuta el servidor de autenticación.
+- **SecureUrlReader:** Clase que maneja la lectura segura de URL para autenticar usuarios.
+- **Encoder:** Clase que proporciona funcionalidades de codificación de contraseñas.
+- **AuthDB:** Clase que simula una base de datos de usuarios para la autenticación.
 
-- **RoundRobinMongoDB (o LogService):** Tres instancias de RoundRobinMongoDB (o LogService), que actúan como servicios de almacenamiento de logs. Estas instancias están diseñadas para manejar las solicitudes de registro de logs y almacenar los datos de manera distribuida.
+## Flujo de Trabajo
 
-- **MongoDB:** Una instancia de MongoDB utilizada como base de datos para almacenar los logs de manera persistente.
+El flujo de trabajo del proyecto es el siguiente:
 
-### Flujo de Trabajo
+1. El servidor AuthServer se inicia y configura para proporcionar servicios de autenticación.
+2. El cliente (navegador web) envía solicitudes de autenticación al servidor.
+3. El servidor verifica las credenciales del usuario utilizando la clase AuthDB y SecureUrlReader.
+4. El servidor responde al cliente con un mensaje de éxito o error según la autenticación.
 
-El flujo de trabajo del prototipo es el siguiente:
+## Ejemplo de Uso
 
-1. La aplicación principal (APP-LB-RoundRobin) recibe una solicitud de registro de logs.
-2. Utilizando el algoritmo de Round Robin, la aplicación distribuye la carga entre las instancias de RoundRobinMongoDB.
-3. Cada instancia de RoundRobinMongoDB maneja la solicitud de registro de logs y almacena los datos en la base de datos MongoDB.
-4. Los logs se almacenan de manera persistente en la base de datos MongoDB para su posterior consulta y análisis.
+Para ejecutar el proyecto, sigue estos pasos:
 
-### Ejemplo de Uso
+1. Clona el repositorio desde GitHub.
+2. Accede al directorio del proyecto.
+3. Ejecuta la aplicación Java utilizando los siguientes comandos:
+   ```bash
+   java -cp "target/classes:target/dependency/*" org.eci.auth.AuthServer
+   java -cp "target/classes;target/dependency/*" org.eci.auth.AuthDB
+   ```
+4. Accede a la aplicación desde tu navegador web utilizando la URL proporcionada por el servidor.
+   ```bash
+   https://localhost:4500/index.html
+   ```
+5. Video despliegue en AWS:
+   ![Video guiado](https://github.com/Tianrojas/Lab07-AREP/blob/main/media/2024-03-20%03-37-04.mp4)
 
-  ![Video guiado](https://github.com/Tianrojas/Lab06-AREP/blob/main/Media/2024-03-13%2018-20-05.mp4)
-  ![Despliegue en AWS](https://github.com/Tianrojas/Lab06-AREP/blob/main/Media/2024-03-13%2018-20-05.mp4)
+## Instrucciones de Ejecución
 
-### Instrucciones de Ejecución
-
-Para ejecutar el prototipo, sigue los siguientes pasos:
-
-1. Clona el repositorio en tu máquina local desde git o las imagenes desde Doker.
-2. Asegúrate de tener Docker instalado en tu sistema.
-3. Navega a la carpeta del proyecto en tu terminal.
-4. Compila las imagenes de cada proyecto, para esto debes ejecutar `docker build --tag tianrojas/logroundrobin .` y `docker build --tag tianrojas/roundrobinbd .` respectivamente.
-5. Ejecuta desde la raiz el comando `docker-compose up` para iniciar todos los servicios.
-6. Una vez que todos los servicios estén en funcionamiento, la aplicación estará lista para recibir solicitudes de registro de logs.
+1. Asegurate que tienes Maven y JavaJDK 17 actualizado con las versiones correctas.
+2. Ejecuta la aplicación Java utilizando el comando proporcionado anteriormente.
+3. Accede a la aplicación desde tu navegador web utilizando la URL proporcionada por el servidor.
