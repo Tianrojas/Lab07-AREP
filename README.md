@@ -50,7 +50,7 @@ Para ejecutar el proyecto, sigue estos pasos:
    https://localhost:4500/index.html
    ```
 5. Video despliegue en AWS:
-   ![Video guiado](https://github.com/Tianrojas/Lab07-AREP/blob/main/media/2024-03-20%03-37-04.mp4)
+   ![Video guiado](https://github.com/Tianrojas/Lab07-AREP/blob/main/media/2024-03-20%2003-37-04.mp4)
 
 ## Instrucciones de Ejecución
 
